@@ -1,0 +1,5 @@
+Längster Kanal: 2mm
+Start Kanal: 106px
+Ende Kanal: 1310px
+
+=> px zu
