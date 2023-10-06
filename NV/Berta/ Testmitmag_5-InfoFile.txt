@@ -1,0 +1,3 @@
+Microwave Power = -10.0dBm 
+Laser Power = 5.0mW 
+Averaging = 3

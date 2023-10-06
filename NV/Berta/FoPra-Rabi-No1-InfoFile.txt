@@ -1,0 +1,6 @@
+Microwave Power = -10.0dBm 
+Laser Power = 25.0mW 
+Averaging = 8
+
+Pulse Sequence: 
+MW-Pulse  -  Break:150.0ns  -  Laser pulse:200.0ns  -  Break:700.0ns 
