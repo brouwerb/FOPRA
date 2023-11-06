@@ -7,8 +7,6 @@ from scipy import sparse
 from scipy.sparse import linalg
 import numpy as np
 from numpy.linalg import norm
-import peakutils
-from peakutils.plot import plot as pplot
 from matplotlib.backend_bases import MouseButton
 from scipy.optimize import curve_fit
 

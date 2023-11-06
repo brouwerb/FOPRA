@@ -6,8 +6,6 @@ from scipy import sparse
 from scipy.sparse import linalg
 import numpy as np
 from numpy.linalg import norm
-import peakutils
-from peakutils.plot import plot as pplot
 from matplotlib.backend_bases import MouseButton
 from scipy.optimize import curve_fit    
 
@@ -147,14 +145,16 @@ print("Splitting:", position-middle)
 
 
 fig, axs = plt.subplots(2)
-axs[0].plot(x, -y, color='red', label='data')
-axs[0].plot(x, -ybase, '-', color='blue', label='baseline')
-axs[0].plot(x, gaussianfit(x, *popt)-ybase, '-', color='green', label='fit')
+axs[0].plot(x, -y/1000, color='red', label='data')
+axs[0].plot(x, -ybase/1000, '-', color='blue', label='baseline')
+axs[0].plot(x, (gaussianfit(x, *popt)-ybase)/1000, '-', color='green', label='fit')
 
-axs[1].plot(x, -y+ybase, color='red', label='data')
-axs[1].plot(x, gaussianfit(x, *popt), '-', color='green', label='fit')
+axs[1].plot(x, (-y+ybase)/1000, color='red', label='data')
+axs[1].plot(x, gaussianfit(x, *popt)/1000, '-', color='green', label='fit')
 axs[1].set_xlabel('Frequency (GHz)')
 axs[1].set_ylabel('Intensity (a.u.)')
 
 plt.show()
+
+plt.savefig('NV/8peaks.pdf', bbox_inches='tight')
 
