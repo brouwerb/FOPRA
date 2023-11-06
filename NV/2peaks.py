@@ -55,7 +55,7 @@ def baseline_arPLS(y, ratio=1e-6, lam=100, niter=10, full_output=False):
 
 # import data from xlsx file
 
-data = pd.read_excel('NV/Berta/ Test1.xlsx', sheet_name='Sheet1').to_numpy().T
+data = pd.read_excel('NV/Berta/ Testmitmag_1.xlsx', sheet_name='Sheet1').to_numpy().T
 
 #cast 2 and 3 colums of pandas dataframe to numpy array
 x = np.array(data[1][1:])
@@ -105,9 +105,8 @@ cid = fig.canvas.mpl_connect('button_press_event', onclick)
 
 plt.show()
 
+#peaknum
 numberofpeaks = len(marked)
-
-#marked = [[2.6136060087564794, -6531.950040046049], [2.691105882944995, -17860.102775250758], [2.830605656484324, -21636.153686985665], [2.8895055608675966, -10150.665497125334], [2.942205475315787, -10622.671861092196], [2.993355392280208, -20692.14095905194], [3.1034052136279007, -15500.070955416446], [3.143705148205929, -5745.272766767946]]
 
 def gaussianfit(x, *args):
     y=0
@@ -143,32 +142,21 @@ print("Position:", position)
 middle = np.mean(position)
 print("Splitting:", position-middle)
 
-def find_nearest(array, value):
-    array = np.asarray(array)
-    idx = (np.abs(array - value)).argmin()
-    return idx
-
-
-#calculate contrast
-Ioff = ybase[find_nearest(x, popt[1])]
-Ires = y[find_nearest(x, popt[1])]
-contrast = (Ioff-Ires)/Ioff
-print("Contrast:", contrast)
-
     
 
 
 fig, axs = plt.subplots(2)
 axs[0].plot(x, -y, color='red', label='data')
-axs[0].plot(x, -ybase, '-', color='blue', label='baseline, contrast = '+str(round(contrast, 2)))
+axs[0].plot(x, -ybase, '-', color='blue', label='baseline')
 axs[0].plot(x, gaussianfit(x, *popt)-ybase, '-', color='green', label='fit')
-axs[0].legend()
 
-axs[1].plot(x, -y+ybase, color='red', label='data, corrected')
-axs[1].plot(x, gaussianfit(x, *popt), '-', color='green', label=f'fit, x0 = {round(position[0], 5)} GHz')
+axs[1].plot(x, -y+ybase, color='red', label='data')
+axs[1].plot(x, gaussianfit(x, *popt), '-', color='green', label='fit')
 axs[1].set_xlabel('Frequency (GHz)')
 axs[1].set_ylabel('Intensity (a.u.)')
-axs[1].legend()
 
 plt.show()
+
+# save plot
+fig.savefig('NV/2peaks.pdf', bbox_inches='tight')
 
