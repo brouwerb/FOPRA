@@ -156,5 +156,5 @@ axs[1].set_ylabel('Intensity (a.u.)')
 
 plt.show()
 
-plt.savefig('NV/8peaks.pdf', bbox_inches='tight')
+fig.savefig('NV/8peaks.pdf')
 

@@ -7,8 +7,6 @@ from scipy import sparse
 from scipy.sparse import linalg
 import numpy as np
 from numpy.linalg import norm
-import peakutils
-from peakutils.plot import plot as pplot
 from matplotlib.backend_bases import MouseButton
 from scipy.optimize import curve_fit
 
@@ -42,5 +40,9 @@ print("Maximum bei", popt[2],"pm", err[2], "ns")
 fig, ax = plt.subplots()
 ax.plot(x, y, label="data")
 ax.plot(x, fitfunc(x, *popt), label="fit")
+ax.set_xlabel("Free evolution time t2 in ns")
+ax.set_ylabel("Intensity in a.u.")
 
 plt.show()
+
+fig.savefig("NV/Hahnrevival.pdf")

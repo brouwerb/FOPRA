@@ -72,7 +72,6 @@ axs[0].plot(x, -ybase, '-', color='blue', label='baseline')
 #axs[0].plot(x[indexes], y[indexes], 'x', color='black', label='peaks')
 
 axs[0].set_xlabel('Frequency (GHz)')
-axs[0].set_ylabel('Intensity (a.u.)')
 axs[0].set_title('NV spectrum')
 axs[0].legend()
 
@@ -80,7 +79,7 @@ axs[0].legend()
 axs[1].plot(x, -y+ybase, color='red', label='data')
 axs[1].set_xlabel('Frequency (GHz)')
 axs[1].set_ylabel('Intensity (a.u.)')
-axs[1].set_title('NV spectrum - baseline')
+
 axs[1].legend()
 
 # select points by mouse click and mark them with a cross
@@ -129,15 +128,24 @@ popt, pconv = curve_fit(gaussianfit, x, -y+ybase, p0 = pO)
 
 print(popt)
 
+err = np.sqrt(np.diag(pconv))
+
 #sort data into hight and position
 height = []
 position = []
+sigma = []
+sigmaerr = []
 for i in range(int(len(popt)/3)):
     height.append(popt[3*i])
     position.append(popt[3*i+1])
+    sigma.append(popt[3*i+2])
+    sigmaerr.append(err[3*i+2])
+    
 
 print("Hight:", height)
 print("Position:", position)
+print("Sigma:", sigma)
+print("Sigmaerr:", sigmaerr)
 
 #calculate middle position
 middle = np.mean(position)
@@ -165,10 +173,12 @@ axs[0].plot(x, gaussianfit(x, *popt)-ybase, '-', color='green', label='fit')
 axs[0].legend()
 
 axs[1].plot(x, -y+ybase, color='red', label='data, corrected')
-axs[1].plot(x, gaussianfit(x, *popt), '-', color='green', label=f'fit, x0 = {round(position[0], 5)} GHz')
+axs[1].plot(x, gaussianfit(x, *popt), '-', color='green', label=f'fit, x0 = {round(position[0], 2)} GHz, sigma = {round(sigma[0], 3)*1000} MHz')
 axs[1].set_xlabel('Frequency (GHz)')
 axs[1].set_ylabel('Intensity (a.u.)')
 axs[1].legend()
 
 plt.show()
+
+fig.savefig("NV/zerofield.pdf")
 

@@ -65,20 +65,21 @@ errhight = np.array([err[0][0], err[1][0], err[2][0]])
 
 #fit exponential
 def fitexp(x, a, b):
-    return a*np.exp(-b*x)
+    return a*np.exp(-x/b)
 
-popt, pconv = curve_fit(fitexp, times, hight, p0=[np.max(hight), 1/np.max(times)])
+popt, pconv = curve_fit(fitexp, times, hight, p0=[np.max(hight), np.max(times)])
 errexp = np.sqrt(np.diag(pconv))
-T2 = 1/popt[1]
+T2 = popt[1]
+T2err = errexp[1]
 axs["hight"].errorbar(times, hight, yerr=errhight, fmt='o')
-axs["hight"].plot(np.arange(np.min(times)-50, np.max(times)+50, 2), fitexp(np.arange(np.min(times)-50, np.max(times)+50, 2), *popt), label='Fit with T2 = '+str(round(T2, 2))+'ns')
+axs["hight"].plot(np.arange(np.min(times)-50, np.max(times)+50, 2), fitexp(np.arange(np.min(times)-50, np.max(times)+50, 2), *popt), label='Fit with T2 = '+str(round(T2))+ " pm " + str(round(T2err)) + ' ns')
 axs["hight"].set_xlabel('t1 in ns')
 axs["hight"].set_ylabel('Stärke des Echos')
-axs["hight"].set_title('Stärke des Echos in Abhängigkeit von t1')
+axs["hight"].set_title('Stärke des Echos in Abhängigkeit von t1 = t2 = t')
 axs["hight"].legend()
 
 plt.tight_layout()
 
 plt.show()
 
-
+fig.savefig('NV/HahnDecay.pdf')

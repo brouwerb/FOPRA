@@ -7,8 +7,6 @@ from scipy import sparse
 from scipy.sparse import linalg
 import numpy as np
 from numpy.linalg import norm
-import peakutils
-from peakutils.plot import plot as pplot
 from matplotlib.backend_bases import MouseButton
 from scipy.optimize import curve_fit
 
@@ -37,12 +35,21 @@ popt, pconv = curve_fit(fitfunc, x, y, p0 = [ap, bp, 0, hp, 0], bounds = ([ap*0.
 print(popt)
 freq = popt[1]*1000/np.pi
 halb = np.log(2)/popt[4]
-print("Frequenz in Mhz:", freq)
-print("Halbwertszeit in ns:", halb)
+error = np.sqrt(np.diag(pconv))
+print("Frequenz in Mhz:", freq, "+-", error[1]*1000/np.pi)
+print("Halbwertszeit in ns:", halb, "+-", error[4]/popt[4]*halb)
+print("x0:", popt[2], "+-", error[2])
 
 fig, ax = plt.subplots()
-ax.plot(x, y)
-ax.plot(x, fitfunc(x, *popt))
-ax.plot(x, [popt[3] for i in x])
+ax.plot(x, y, label="data")
+ax.plot(x, fitfunc(x, *popt), label="fit with frequency = " + str(round(freq, 2)) + " +- "+ str(round(error[1]*1000/np.pi, 2)) + "MHz")
+ax.plot(x, [popt[3] for i in x], color="black", linestyle="dashed", label="Offset")
+
+ax.set_xlabel("Pulse duration in ns")
+ax.set_ylabel("Intensity in a.u.")
+
+ax.legend()
 
 plt.show()
+
+fig.savefig("NV/Rabi.pdf")
