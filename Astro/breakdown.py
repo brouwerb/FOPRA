@@ -145,9 +145,9 @@ for i, voltage in enumerate(voltages):
         popt = fits[i]
         numberofpeaks = int(len(popt)/3)
         ax.plot(x[:-300], gaussianfit(x, *popt)[:-300], color=colors[i], linestyle='--', label='Fit for {}V'.format(voltage))
-ax.set_xlabel('Height (a.u.)')
+ax.set_xlabel('ADC Channel')
 ax.set_ylabel('Counts')
-ax.set_title('Histograms for Voltages 53V, 56V, and 59V')
+#ax.set_title('Histograms for Voltages 53V, 56V, and 59V')
 ax.set_xlim(0, 2000)
 ax.legend()
 plt.show()
@@ -172,13 +172,13 @@ print("Breakdown Voltage:", round_errtexU(x_intercept))
 
 # Plot distances with error bars
 fig, ax = plt.subplots()
-ax.errorbar(voltages, unp.nominal_values(distances), yerr=unp.std_devs(distances), fmt=".", color='red', label='Data', linestyle='None', elinewidth=10)
+ax.errorbar(voltages, unp.nominal_values(distances), yerr=unp.std_devs(distances), fmt=".", color='red', label='Data with Uncertainty', linestyle='None', elinewidth=10)
 x = np.linspace(51, 61, 1000)
 ax.plot(x, np.polyval(popt, x), color='blue', linestyle='--', label='Fit with Breakdown Voltage at {}V'.format(round_errtexU(x_intercept)))
 ax.axhline(0, color='grey', linestyle='--')
 ax.set_xlabel('Voltage (V)')
 ax.set_ylabel('Distance')
-ax.set_title('Distance between first and second peak')
+#ax.set_title('Distance between first and second peak')
 ax.legend()
 plt.show()
 #save
